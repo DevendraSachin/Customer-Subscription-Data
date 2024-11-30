@@ -1,0 +1,35 @@
+CREATE TABLE product_info(
+   product_id VARCHAR(5) PRIMARY KEY,
+   name VARCHAR(20) NOT NULL,
+   price INTEGER  NOT NULL,
+   billing_cycle INTEGER
+);
+
+CREATE TABLE customer_cases(
+    Sr_No INT AUTO_INCREMENT, 
+    case_id VARCHAR(10) PRIMARY KEY, 
+    date_time DATETIME NOT NULL, 
+    customer_id VARCHAR(7), 
+    channel VARCHAR(5), 
+    reason VARCHAR(7), 
+    CONSTRAINT CC_FK FOREIGN KEY (customer_id) REFERENCES CUSTOMER_INFO(customer_id) ON DELETE CASCADE 
+  );
+
+CREATE TABLE customer_info(
+   Sr_No INT AUTO_INCREMENT,
+   customer_id VARCHAR(7) PRIMARY KEY,
+   age INTEGER NOT NULL,
+   gender VARCHAR(6) NOT NULL
+);
+
+CREATE TABLE customer_product(
+   Sr_No INT AUTO_INCREMENT,
+   customer_id VARCHAR(7),
+   product VARCHAR(5),
+   signup_date_time VARCHAR(16) NOT NULL,
+   cancel_date_time VARCHAR(16),
+   CONSTRAINT CP_FK FOREIGN KEY (CUSTOMER_ID) REFERENCES CUSTOMER_INFO(CUSTOMER_ID) ON DELETE CASCADE,
+   CONSTRAINT PI_FK FOREIGN KEY (PRODUCT) REFERENCES PRODUCT_INFO(PRODUCT_ID) ON DELETE CASCADE
+);
+
+
