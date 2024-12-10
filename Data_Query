@@ -1,2 +1,9 @@
-#Basic Query.
+-- Basic Query.
+1.	How many unique customers have signed up for products?
+>> Select count (distinct customer_id) as unique_customers
+   from customer_product;
 
+2.	What is the total number of male and female customers?
+>> Select gender, count(*) as count 
+   from customer_info
+   group by gender;
