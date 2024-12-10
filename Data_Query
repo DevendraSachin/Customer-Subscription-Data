@@ -67,9 +67,49 @@
 >> Select
 	CASE WHEN p.cancel_date_time is null THEN 'Active' else 'Cancelled' END as status, Avg(i.age) as avg_age
 	from customer_product as p
-	join customer_info as i
-	on i.customer_id = p.customer_id
+	join customer_info as i on i.customer_id = p.customer_id
 	group by status;
 
+
 2. 	Which product has the highest average subscription duration (from signup to cancellation or current date if active)?
- 
+>> Select product, avg(datediff(coalesce(cancel_date_time, now()), signup_date_time)) as avg_duration
+	from customer_product
+	group by product
+	order by avg_duration desc;
+
+
+3.	What is the gender distribution among customers for each product?
+>> Select p.product, i.gender, count(i.gender) as gender_count
+	from customer_product as p
+	join customer_info as i on i.customer_id = p.customer_id
+	group by p.product, i.gender
+	order by p.product, i.gender desc;
+
+
+4.	Which age group (e.g., <30, 30-50, 50+) has the highest subscription cancellation rate?
+>> Select
+	CASE 
+	    WHEN i.age < 30 THEN '< 30' 
+	    WHEN i.age <= 50 THEN '30 ~ 50'
+	    WHEN i.age > 50 THEN '50+'
+	    END as age_group,
+	format(count(*),0) as cancellations
+	from customer_product as p
+	join customer_info as i on i.customer_id = p.customer_id
+	where p.cancel_date_time is not null
+	group by age_group
+    order by age_group;
+
+
+5.	What is the percentage of customers who cancelled within the first year of their subscription?
+>> Select 
+    ROUND(COUNT(*) / (Select COUNT(*) from customer_product where cancel_date_time IS NOT NULL) * 100, 2) As percentage
+	from customer_product
+	where cancel_date_time IS NOT NULL AND DATEDIFF(cancel_date_time, signup_date_time) <= 365;
+
+>> Select 
+    ROUND((count(datediff(cancel_date_time, signup_date_time) <= 365)/(Select COUNT(*) from customer_product where cancel_date_time IS NOT NULL))*100,2) As percentage
+	from customer_product
+	where cancel_date_time is not null;
+	
+	
