@@ -1,9 +1,68 @@
--- Basic Query.
+-- Basic 10 Query.
 1.	How many unique customers have signed up for products?
 >> Select count (distinct customer_id) as unique_customers
    from customer_product;
+
 
 2.	What is the total number of male and female customers?
 >> Select gender, count(*) as count 
    from customer_info
    group by gender;
+
+
+3.	What is the average age of the customers who have signed up?
+>> Select Avg(age) as Average_Age 
+   from customer_info;
+
+
+4.	How many customers have cancelled their product subscriptions?
+>> Select count(cancel_date_time) as cancellations 
+   from customer_product
+   where cancel_date_time is not null;
+
+
+5.	What are the most popular products among customers?
+>> Select product, count(*) as product_count
+   from customer_product 
+   group by product 
+   order by product_count desc;
+
+
+6.	Which product has the highest number of cancellations?
+>> Select product, count(*) as cancel_count 
+   from customer_product
+	where cancel_date_time is not null
+	group by product
+	order by cancel_count desc;
+
+
+7.	What is the average subscription duration for customers who have cancelled?
+>> Select avg(datediff(cancel_date_time, signup_date_time)) as avg_duration 
+   from customer_product 
+   where cancel_date_time is not null;
+
+
+8.	What is the earliest and latest signup date in the dataset?
+>> Select min(signup_date) as earliest_signup, max(signup_date) as latest_signup 
+   from customer_product;
+
+
+9.	How many male and female customers have canceled their subscriptions?
+>> Select i.Gender, count(p.cancel_date_time) as cancel_count 
+   from customer_info as i
+	join customer_product as p on i.customer_id  =  p.customer_id
+	where p.cancel_date_time is not null
+	group by i.gender;
+
+
+10. Which customers are still active and have not cancelled any product?
+>> Select i.customer_id, i.age, i.gender, p.product 
+   from customer_info as i
+	join customer_product as p on p.customer_id = i.customer_id
+	where cancel_date_time is null;
+
+
+-- Intermediate Query
+1. What is the average age of customers who cancelled their subscriptions compared to those who did not?
+>> 
+
