@@ -7,7 +7,7 @@
 2.	What is the total number of male and female customers?
 >> Select gender, count(*) as count 
    from customer_info
-   group by gender;
+   	group by gender;
 
 
 3.	What is the average age of the customers who have signed up?
@@ -18,14 +18,14 @@
 4.	How many customers have cancelled their product subscriptions?
 >> Select count(cancel_date_time) as cancellations 
    from customer_product
-   where cancel_date_time is not null;
+   	where cancel_date_time is not null;
 
 
 5.	What are the most popular products among customers?
 >> Select product, count(*) as product_count
    from customer_product 
-   group by product 
-   order by product_count desc;
+   	group by product 
+   	order by product_count desc;
 
 
 6.	Which product has the highest number of cancellations?
@@ -39,7 +39,7 @@
 7.	What is the average subscription duration for customers who have cancelled?
 >> Select avg(datediff(cancel_date_time, signup_date_time)) as avg_duration 
    from customer_product 
-   where cancel_date_time is not null;
+   	where cancel_date_time is not null;
 
 
 8.	What is the earliest and latest signup date in the dataset?
@@ -55,7 +55,7 @@
 	group by i.gender;
 
 
-10. Which customers are still active and have not cancelled any product?
+10. 	Which customers are still active and have not cancelled any product?
 >> Select i.customer_id, i.age, i.gender, p.product 
    from customer_info as i
 	join customer_product as p on p.customer_id = i.customer_id
@@ -63,6 +63,13 @@
 
 
 -- Intermediate Query
-1. What is the average age of customers who cancelled their subscriptions compared to those who did not?
->> 
+1. 	What is the average age of customers who cancelled their subscriptions compared to those who did not?
+>> Select
+	CASE WHEN p.cancel_date_time is null THEN 'Active' else 'Cancelled' END as status, Avg(i.age) as avg_age
+	from customer_product as p
+	join customer_info as i
+	on i.customer_id = p.customer_id
+	group by status;
 
+2. 	Which product has the highest average subscription duration (from signup to cancellation or current date if active)?
+ 
