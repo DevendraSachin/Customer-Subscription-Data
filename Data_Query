@@ -111,5 +111,30 @@
     ROUND((count(datediff(cancel_date_time, signup_date_time) <= 365)/(Select COUNT(*) from customer_product where cancel_date_time IS NOT NULL))*100,2) As percentage
 	from customer_product
 	where cancel_date_time is not null;
-	
-	
+
+
+6.	For each product, what is the average time (in months) between signup and cancellation (for those who canceled)?
+>> Select product, AVG(TIMESTAMPDIFF(MONTH, signup_date_time, cancel_date_time)) as avg_months
+	from customer_product
+	where cancel_date_time is not null
+	group by product;
+
+
+7. 	Identify customers who have been subscribed for more than 2 years but haven’t canceled yet.
+>> Select * from customer_product
+	where cancel_date_time is null and datediff(now(), signup_date_time) > 730;
+
+
+8. 	What is the correlation between customer age and subscription duration (in days)?
+>> Select i.age, datediff(coalesce(p.cancel_date_time, now()), p.signup_date_time) as Duration
+	from customer_product as p
+	join customer_info as i on i.customer_id = p.customer_id;
+
+
+9. 	Find customers who signed up for multiple products.
+>> Select customer_id 
+	from customer_product
+	where product in ('Prd_1', 'Prd_2')
+	group by customer_id
+	having count(distinct product) >= 2;
+
