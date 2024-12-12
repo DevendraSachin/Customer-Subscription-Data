@@ -1,4 +1,4 @@
--- Basic 10 Query.
+-- Basic level Query.
 1.	How many unique customers have signed up for products?
 >> Select count (distinct customer_id) as unique_customers
    from customer_product;
@@ -61,8 +61,8 @@
 	join customer_product as p on p.customer_id = i.customer_id
 	where cancel_date_time is null;
 
-
--- Intermediate Query
+-----------------------------------------------------------------------------------------------------------------------------------
+-- Intermediate level Query
 1. 	What is the average age of customers who cancelled their subscriptions compared to those who did not?
 >> Select
 	CASE WHEN p.cancel_date_time is null THEN 'Active' else 'Cancelled' END as status, Avg(i.age) as avg_age
@@ -137,4 +137,3 @@
 	where product in ('Prd_1', 'Prd_2')
 	group by customer_id
 	having count(distinct product) >= 2;
-
